@@ -7,7 +7,7 @@ export function RevenueChart() {
 
   return (
     <div className="rounded-lg border border-border bg-card p-4">
-      <h3 className="text-sm font-semibold text-card-foreground mb-3">Revenue Trend (8 Months)</h3>
+      <h3 className="text-sm font-semibold text-card-foreground mb-3">Revenue Trend — All Locations (₹)</h3>
       <div className="h-[240px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
@@ -19,11 +19,11 @@ export function RevenueChart() {
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(220, 14%, 18%)" />
             <XAxis dataKey="month" tick={{ fontSize: 11, fill: 'hsl(215, 15%, 55%)' }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fontSize: 11, fill: 'hsl(215, 15%, 55%)' }} axisLine={false} tickLine={false} tickFormatter={v => `$${(v / 1000).toFixed(0)}K`} />
+            <YAxis tick={{ fontSize: 11, fill: 'hsl(215, 15%, 55%)' }} axisLine={false} tickLine={false} tickFormatter={v => `₹${(v / 100000).toFixed(1)}L`} />
             <Tooltip
               contentStyle={{ backgroundColor: 'hsl(220, 18%, 10%)', border: '1px solid hsl(220, 14%, 18%)', borderRadius: 8, fontSize: 12 }}
               labelStyle={{ color: 'hsl(210, 20%, 92%)' }}
-              formatter={(value: number) => [`$${value.toLocaleString()}`, '']}
+              formatter={(value: number) => [`₹${value.toLocaleString('en-IN')}`, '']}
             />
             <Legend wrapperStyle={{ fontSize: 11 }} />
             <Area type="monotone" dataKey="revenue" name="Revenue" stroke="hsl(142, 70%, 45%)" fill="url(#revGrad)" strokeWidth={2} />

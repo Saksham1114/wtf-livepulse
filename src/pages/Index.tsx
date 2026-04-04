@@ -11,37 +11,36 @@ import { useLiveEvents } from '@/hooks/use-live-events';
 const Index = () => {
   const {
     gyms, events, anomalies, isRunning, setIsRunning,
-    totalCheckIns, totalCheckOuts, totalOccupancy, totalCapacity,
-    totalRevenue, unacknowledgedAnomalies, acknowledgeAnomaly,
+    simulatorSpeed, setSimulatorSpeed,
+    totalOccupancy, totalCapacity,
+    totalTodayRevenue, activeAnomalies, acknowledgeAnomaly,
   } = useLiveEvents(1);
 
   return (
     <div className="min-h-screen bg-background px-4 pb-8 max-w-[1440px] mx-auto">
-      <DashboardHeader isRunning={isRunning} onToggle={() => setIsRunning(r => !r)} />
-      
+      <DashboardHeader
+        isRunning={isRunning}
+        onToggle={() => setIsRunning(r => !r)}
+        speed={simulatorSpeed}
+        onSpeedChange={setSimulatorSpeed}
+      />
+
       <StatsBar
         totalOccupancy={totalOccupancy}
         totalCapacity={totalCapacity}
-        totalCheckIns={totalCheckIns}
-        totalCheckOuts={totalCheckOuts}
-        totalRevenue={totalRevenue}
-        unacknowledgedAnomalies={unacknowledgedAnomalies}
+        totalTodayRevenue={totalTodayRevenue}
+        activeAnomalies={activeAnomalies}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mt-3">
-        {/* Left column: Occupancy + Live Feed */}
         <div className="space-y-3">
           <OccupancyGrid gyms={gyms} />
           <LiveFeed events={events} />
         </div>
-
-        {/* Center column: Heatmap + Revenue */}
         <div className="space-y-3">
           <HeatmapPanel />
           <RevenueChart />
         </div>
-
-        {/* Right column: Anomalies + Churn */}
         <div className="space-y-3">
           <AnomalyLog anomalies={anomalies} onAcknowledge={acknowledgeAnomaly} />
           <ChurnPanel gyms={gyms} />
