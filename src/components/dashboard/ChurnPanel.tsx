@@ -6,30 +6,32 @@ interface ChurnPanelProps {
 }
 
 export function ChurnPanel({ gyms }: ChurnPanelProps) {
-  const sorted = [...gyms].sort((a, b) => b.churnRate - a.churnRate);
+  const totalHigh = gyms.reduce((s, g) => s + g.churnHighRisk, 0);
+  const totalCritical = gyms.reduce((s, g) => s + g.churnCriticalRisk, 0);
 
   return (
     <div className="rounded-lg border border-border bg-card p-4">
-      <h3 className="text-sm font-semibold text-card-foreground mb-3">Churn Risk by Location</h3>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-sm font-semibold text-card-foreground">Churn Risk Panel</h3>
+        <div className="flex gap-3 text-[10px]">
+          <span className="text-warning font-bold">HIGH: {totalHigh}</span>
+          <span className="text-destructive font-bold">CRITICAL: {totalCritical}</span>
+        </div>
+      </div>
+      <p className="text-[10px] text-muted-foreground mb-2">Active members with no check-in for 45+ days</p>
       <div className="space-y-2">
-        {sorted.slice(0, 6).map((gym) => {
-          const isHigh = gym.churnRate >= 5;
-          const isMed = gym.churnRate >= 4;
-          return (
-            <div key={gym.id} className="flex items-center justify-between py-1.5 px-2 rounded hover:bg-muted/50 transition-colors">
-              <div className="flex items-center gap-2">
-                {isHigh && <AlertTriangle className="h-3.5 w-3.5 text-destructive" />}
-                <span className="text-xs font-medium text-card-foreground">{gym.name}</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-muted-foreground">{gym.memberCount} members</span>
-                <span className={`text-xs font-bold font-mono ${isHigh ? 'text-destructive' : isMed ? 'text-warning' : 'text-primary'}`}>
-                  {gym.churnRate}%
-                </span>
-              </div>
+        {gyms.filter(g => g.churnHighRisk > 0 || g.churnCriticalRisk > 0).map((gym) => (
+          <div key={gym.id} className="flex items-center justify-between py-1.5 px-2 rounded hover:bg-muted/50 transition-colors">
+            <div className="flex items-center gap-2">
+              {gym.churnCriticalRisk > 5 && <AlertTriangle className="h-3.5 w-3.5 text-destructive" />}
+              <span className="text-xs font-medium text-card-foreground">{gym.name.replace('WTF Gyms — ', '')}</span>
             </div>
-          );
-        })}
+            <div className="flex items-center gap-3">
+              <span className="text-xs text-warning font-mono">{gym.churnHighRisk} high</span>
+              <span className="text-xs text-destructive font-mono">{gym.churnCriticalRisk} crit</span>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
