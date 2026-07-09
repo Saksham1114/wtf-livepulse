@@ -1,4 +1,4 @@
-# 🏋️ WTF LivePulse Dashboard
+# 🏋️ WTF LivePulse Dashboard Demo
 
 A real-time gym analytics dashboard that tracks live occupancy, revenue, and anomaly detection across multiple gym locations.
 
