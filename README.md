@@ -31,8 +31,6 @@ A real-time gym analytics dashboard that tracks live occupancy, revenue, and ano
 ### Infrastructure
 - Docker & Docker Compose
 
----
-
 ## ⚙️ How to Run (1 Command)
 
 ```bash
